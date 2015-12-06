@@ -1,7 +1,7 @@
 #lang racket
 
 (define (square x) (* x x))
-(define (runtime) (current-milliseconds))
+(define (runtime) (current-inexact-milliseconds))
 
 (define (timed-prime-test n)
   (start-prime-test n (runtime)))
@@ -17,24 +17,34 @@
   (newline))
 
 (define (prime? n)
-   (= (smallest-divisible n) n))
+   (= (smallest-divisor n) n))
 
-(define (smallest-divisible n)
-  (find-divisible n 2))
+(define (smallest-divisor n)
+  (find-divisor n 2))
 
-(define (find-divisible n guess)
+(define (find-divisor n guess)
   (cond ((> (square guess) n) n)
-        ((divisible? n guess) guess)
-        (else (find-divisible n (+ 1 guess)))))
+        ((divides? n guess) guess)
+        (else (find-divisor n (next guess)))))
 
-(define (divisible? n guess)
-  (= (remainder n guess) 0))
+(define (next a)
+  (if (= a 2)
+      3
+      (+ a 2)))
 
-(define (even? n)
-  (= (remainder n 2) 0))
+(define (divides? a b)
+  (= (remainder a b) 0))
       
-(define (search_for_primess from to)
+(define (search-for-primes from to)
    (cond ((> from to) false)
-         ((<= from 3)   (timed-prime-test from) (search_for_primess (+ 1 from) to))
-         ((prime? from) (timed-prime-test from) (search_for_primess (+ 2 from) to))
-         (else          (search_for_primess (+ 1 from) to))))      
+         ((<= from 3)   (timed-prime-test from) (search-for-primes (+ 1 from) to))
+         ((prime? from) (timed-prime-test from) (search-for-primes (+ 2 from) to))
+         (else          (search-for-primes (+ 1 from) to))))
+
+(define (x-smallest-primes-larger-than-n n x)
+  (cond ((< x 0) false) 
+        ((timed-prime-test n) (x-smallest-primes-larger-than-n (+ n 1) (- x 1)))
+        (else                 (x-smallest-primes-larger-than-n (+ n 1) x))))
+
+
+
