@@ -36,13 +36,13 @@
   (= (remainder a b) 0))
       
 (define (search-for-primes from to)
-   (cond ((> from to) false)
+   (cond ((> from to)   true)
          ((<= from 3)   (timed-prime-test from) (search-for-primes (+ 1 from) to))
          ((prime? from) (timed-prime-test from) (search-for-primes (+ 2 from) to))
          (else          (search-for-primes (+ 1 from) to))))
 
 (define (x-smallest-primes-larger-than-n n x)
-  (cond ((< x 0) false) 
+  (cond ((< x 0)              true) 
         ((timed-prime-test n) (x-smallest-primes-larger-than-n (+ n 1) (- x 1)))
         (else                 (x-smallest-primes-larger-than-n (+ n 1) x))))
 
