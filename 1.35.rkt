@@ -1,7 +1,7 @@
 #lang racket
 
 
-(define (golden-ration x)
+(define (golden-ratio x)
   (fixed-point (lambda (x) (+ 1 (/ 1 x)))
                1.0))
 
